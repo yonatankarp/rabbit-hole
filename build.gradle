@@ -5,6 +5,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
+apply from: 'codemetrics.gradle'
+
 group = 'com.yonatankarp'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
@@ -21,4 +23,5 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
