@@ -1,0 +1,41 @@
+name: Test
+
+on: [pull_request]
+
+jobs:
+  execute:
+    name: Execute
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+
+      - name: Install Ubuntu packages
+        id: package
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends fontconfig
+      - name: Get Gradle Version
+        id: gradle
+        # In the `run` stage here we parse out the Gradle version from
+        # `gradle-wrapper.properties` and pass it to the `output` of our
+        # Job step:
+        run: |
+          properties="./gradle/wrapper/gradle-wrapper.properties"
+          version="$(grep distributionUrl $properties | cut -d'-' -f2)"
+          echo "::set-output name=version::$version"
+      - name: Install Java
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 11
+
+      - name: Gradle Test
+        uses: eskatos/gradle-command-action@v1.3.3
+        with:
+          gradle-version: ${{ steps.gradle.version }}
+          arguments: test
+          wrapper-cache-enabled: false
+
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: "./build/reports/jacoco/jacocoTestReport.xml"
