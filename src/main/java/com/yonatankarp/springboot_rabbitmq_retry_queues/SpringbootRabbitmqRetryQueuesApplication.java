@@ -9,5 +9,4 @@ public class SpringbootRabbitmqRetryQueuesApplication {
     public static void main(String[] args) {
         SpringApplication.run(SpringbootRabbitmqRetryQueuesApplication.class, args);
     }
-
 }
