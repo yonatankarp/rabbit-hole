@@ -7,6 +7,10 @@ plugins {
 	id 'com.diffplug.spotless' version '5.9.0'
 }
 
+ext {
+	springBootVersion = '2.4.4'
+}
+
 apply from: 'codemetrics.gradle'
 
 group = 'com.yonatankarp'
@@ -24,9 +28,9 @@ jar {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-amqp'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.amqp:spring-rabbit-test'
+	compile "org.springframework.boot:spring-boot-starter-amqp:$springBootVersion"
+
+	testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
 }
 
 test {
@@ -39,7 +43,7 @@ publishing {
 	repositories {
 		maven {
 			name = "GitHubPackages"
-			url = uri("https://maven.pkg.github.com/yonatankarp/springboot-rabbitmq-retry-queues")
+			url = uri("https://maven.pkg.github.com/yonatankarp/rabbit-hole")
 			credentials {
 				username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
 				password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
@@ -48,8 +52,20 @@ publishing {
 	}
 	publications {
 		gpr(MavenPublication) {
-//            from(components.java)
 			artifact bootJar
+			versionMapping {
+				usage('java-runtime') {
+					fromResolutionResult()
+				}
+			}
+		}
+		maven(MavenPublication) {
+			artifact bootJar
+			versionMapping {
+				usage('java-runtime') {
+					fromResolutionResult()
+				}
+			}
 		}
 	}
 }
