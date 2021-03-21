@@ -1,32 +1,32 @@
 apply plugin: 'jacoco'
 
 jacoco {
-    toolVersion = "0.8.6"
+	toolVersion = "0.8.6"
 }
 
 jacocoTestReport {
-    reports {
-        xml.enabled true
-        xml.destination file("${buildDir}/reports/jacoco/jacocoTestReport.xml")
-        html.enabled true
-        html.destination file("${buildDir}/reports/jacoco")
-    }
+	reports {
+		xml.enabled true
+		xml.destination file("${buildDir}/reports/jacoco/jacocoTestReport.xml")
+		html.enabled true
+		html.destination file("${buildDir}/reports/jacoco")
+	}
 }
 
 spotless {
-    java {
-        importOrder()
-        removeUnusedImports()
-        googleJavaFormat()
-        toggleOffOn()
-    }
-    format 'misc', {
-        // define the files to apply `misc` to
-        target '*.gradle', '*.md', '.gitignore'
+	java {
+		importOrder()
+		removeUnusedImports()
+		googleJavaFormat()
+		toggleOffOn()
+	}
+	format 'misc', {
+		// define the files to apply `misc` to
+		target '*.gradle', '*.md', '.gitignore'
 
-        // define the steps to apply to those files
-        trimTrailingWhitespace()
-        indentWithTabs()
-        endWithNewline()
-    }
+		// define the steps to apply to those files
+		trimTrailingWhitespace()
+		indentWithTabs()
+		endWithNewline()
+	}
 }
