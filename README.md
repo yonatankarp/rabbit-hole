@@ -8,3 +8,4 @@
 ![GitHub issues](https://img.shields.io/github/issues-raw/yonatankarp/springboot-rabbitmq-retry-queues)
 ![GitHub top language](https://img.shields.io/github/languages/top/yonatankarp/springboot-rabbitmq-retry-queues)
 ![Maintenance](https://img.shields.io/maintenance/yes/2021)
+![GitHub](https://img.shields.io/github/license/yonatankarp/springboot-rabbitmq-retry-queues)
