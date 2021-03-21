@@ -1,22 +1,22 @@
 <!--
-   This README is based on "Best-README-Template" for more info
-   visit https://github.com/othneildrew/Best-README-Template#about-the-project
+This README is based on "Best-README-Template" for more info
+visit https://github.com/othneildrew/Best-README-Template#about-the-project
 -->
 
-<h3 align="center">SpringBoot RabbitMQ Retry Queues</h3>
-  <p align="center">
-    The "SpringBoot RabbitMQ Retry Queues" is a JVM library that allows you to easily create retry mechanisms in
-    RabbitMQ brokers without blocking the queue. The implementation is based on the article
-    <a href="https://programmerfriend.com/rabbit-mq-retry/">Implementing Retries using RabbitMQ and Spring Boot 2</a>.
-    <br />
-    <br />
-    <a href="https://github.com/yonatankarp/springboot-rabbitmq-retry-queues"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/yonatankarp/springboot-rabbitmq-retry-queues/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/yonatankarp/springboot-rabbitmq-retry-queues/issues">Request Feature</a>
-  </p>
+<h3 align="center">Rabbit Hole</h3>
+<p align="center">
+	The "Rabbit Hole" project is a JVM library that allows you to easily create retry mechanisms in
+	RabbitMQ brokers without blocking the queue. The implementation is based on the article
+	<a href="https://programmerfriend.com/rabbit-mq-retry/">Implementing Retries using RabbitMQ and Spring Boot 2</a>.
+	<br />
+	<br />
+	<a href="https://github.com/yonatankarp/springboot-rabbitmq-retry-queues"><strong>Explore the docs »</strong></a>
+	<br />
+	<br />
+	<a href="https://github.com/yonatankarp/springboot-rabbitmq-retry-queues/issues">Report Bug</a>
+	·
+	<a href="https://github.com/yonatankarp/springboot-rabbitmq-retry-queues/issues">Request Feature</a>
+</p>
 
 
 ![Build](https://github.com/yonatankarp/springboot-rabbitmq-retry-queues/actions/workflows/build.yml/badge.svg)
@@ -32,27 +32,27 @@
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
-  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ol>
+<summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+<ol>
+	<li>
+	<a href="#about-the-project">About The Project</a>
+	<ul>
+		<li><a href="#built-with">Built With</a></li>
+	</ul>
+	</li>
+	<li>
+	<a href="#getting-started">Getting Started</a>
+	<ul>
+		<li><a href="#prerequisites">Prerequisites</a></li>
+		<li><a href="#installation">Installation</a></li>
+	</ul>
+	</li>
+	<li><a href="#usage">Usage</a></li>
+	<li><a href="#roadmap">Roadmap</a></li>
+	<li><a href="#contributing">Contributing</a></li>
+	<li><a href="#license">License</a></li>
+	<li><a href="#contact">Contact</a></li>
+</ol>
 </details>
 
 
@@ -89,18 +89,18 @@ To build this library locally follow those steps.
 ### Installation
 
 1. Clone the repo
-   ```shell
-   git clone https://github.com/yonatankarp/springboot-rabbitmq-retry-queues.git
-   ```
+```shell
+git clone https://github.com/yonatankarp/rabbit-hole.git
+```
 2. Run Gradle build command to fetch all the project  dependencies
-   ```shell
-   gradle build
-   ```
+```shell
+gradle build
+```
 
 3. Publish the library to your local Maven repository
-   ```shell
-   gradle publishToMavenLocal 
-   ```
+```shell
+gradle publishToMavenLocal
+```
 
 ## Usage
 
