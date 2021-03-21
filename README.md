@@ -1,58 +1,58 @@
 <!--
-   This README is based on "Best-README-Template" for more info
-   visit https://github.com/othneildrew/Best-README-Template#about-the-project
+This README is based on "Best-README-Template" for more info
+visit https://github.com/othneildrew/Best-README-Template#about-the-project
 -->
 
-<h3 align="center">SpringBoot RabbitMQ Retry Queues</h3>
-  <p align="center">
-    The "SpringBoot RabbitMQ Retry Queues" is a JVM library that allows you to easily create retry mechanisms in
-    RabbitMQ brokers without blocking the queue. The implementation is based on the article
-    <a href="https://programmerfriend.com/rabbit-mq-retry/">Implementing Retries using RabbitMQ and Spring Boot 2</a>.
-    <br />
-    <br />
-    <a href="https://github.com/yonatankarp/springboot-rabbitmq-retry-queues"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/yonatankarp/springboot-rabbitmq-retry-queues/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/yonatankarp/springboot-rabbitmq-retry-queues/issues">Request Feature</a>
-  </p>
+<h3 align="center">Rabbit Hole</h3>
+<p align="center">
+	The "Rabbit Hole" project is a JVM library that allows you to easily create retry mechanisms in
+	RabbitMQ brokers without blocking the queue. The implementation is based on the article
+	<a href="https://programmerfriend.com/rabbit-mq-retry/">Implementing Retries using RabbitMQ and Spring Boot 2</a>.
+	<br />
+	<br />
+	<a href="https://github.com/yonatankarp/rabbit-hole"><strong>Explore the docs »</strong></a>
+	<br />
+	<br />
+	<a href="https://github.com/yonatankarp/rabbit-hole/issues">Report Bug</a>
+	·
+	<a href="https://github.com/yonatankarp/rabbit-hole/issues">Request Feature</a>
+</p>
 
 
-![Build](https://github.com/yonatankarp/springboot-rabbitmq-retry-queues/actions/workflows/build.yml/badge.svg)
-![Code Style](https://github.com/yonatankarp/springboot-rabbitmq-retry-queues/actions/workflows/code_style.yml/badge.svg)
-[![codecov](https://codecov.io/gh/yonatankarp/springboot-rabbitmq-retry-queues/branch/main/graph/badge.svg?token=BZ118ARLZQ)](https://codecov.io/gh/yonatankarp/springboot-rabbitmq-retry-queues)
-[![Known Vulnerabilities](https://snyk.io/test/github/yonatankarp/springboot-rabbitmq-retry-queues/badge.svg)](https://snyk.io/test/github)
-![GitHub last commit](https://img.shields.io/github/last-commit/yonatankarp/springboot-rabbitmq-retry-queues)
-![GitHub issues](https://img.shields.io/github/issues-raw/yonatankarp/springboot-rabbitmq-retry-queues)
-![GitHub top language](https://img.shields.io/github/languages/top/yonatankarp/springboot-rabbitmq-retry-queues)
+![Build](https://github.com/yonatankarp/rabbit-hole/actions/workflows/build.yml/badge.svg)
+![Code Style](https://github.com/yonatankarp/rabbit-hole/actions/workflows/code_style.yml/badge.svg)
+[![codecov](https://codecov.io/gh/yonatankarp/rabbit-hole/branch/main/graph/badge.svg?token=BZ118ARLZQ)](https://codecov.io/gh/yonatankarp/rabbit-hole)
+[![Known Vulnerabilities](https://snyk.io/test/github/yonatankarp/rabbit-hole/badge.svg)](https://snyk.io/test/github)
+![GitHub last commit](https://img.shields.io/github/last-commit/yonatankarp/rabbit-hole)
+![GitHub issues](https://img.shields.io/github/issues-raw/yonatankarp/rabbit-hole)
+![GitHub top language](https://img.shields.io/github/languages/top/yonatankarp/rabbit-hole)
 ![Maintenance](https://img.shields.io/maintenance/yes/2021)
-![GitHub](https://img.shields.io/github/license/yonatankarp/springboot-rabbitmq-retry-queues)
+![GitHub](https://img.shields.io/github/license/yonatankarp/rabbit-hole)
 
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
-  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ol>
+<summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+<ol>
+	<li>
+	<a href="#about-the-project">About The Project</a>
+	<ul>
+		<li><a href="#built-with">Built With</a></li>
+	</ul>
+	</li>
+	<li>
+	<a href="#getting-started">Getting Started</a>
+	<ul>
+		<li><a href="#prerequisites">Prerequisites</a></li>
+		<li><a href="#installation">Installation</a></li>
+	</ul>
+	</li>
+	<li><a href="#usage">Usage</a></li>
+	<li><a href="#roadmap">Roadmap</a></li>
+	<li><a href="#contributing">Contributing</a></li>
+	<li><a href="#license">License</a></li>
+	<li><a href="#contact">Contact</a></li>
+</ol>
 </details>
 
 
@@ -89,18 +89,18 @@ To build this library locally follow those steps.
 ### Installation
 
 1. Clone the repo
-   ```shell
-   git clone https://github.com/yonatankarp/springboot-rabbitmq-retry-queues.git
-   ```
+```shell
+git clone https://github.com/yonatankarp/rabbit-hole.git
+```
 2. Run Gradle build command to fetch all the project  dependencies
-   ```shell
-   gradle build
-   ```
+```shell
+gradle build
+```
 
 3. Publish the library to your local Maven repository
-   ```shell
-   gradle publishToMavenLocal 
-   ```
+```shell
+gradle publishToMavenLocal
+```
 
 ## Usage
 
@@ -114,7 +114,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 ## Roadmap
 
-See the [open issues](https://github.com/yonatankarp/springboot-rabbitmq-retry-queues/issues) for a list of proposed
+See the [open issues](https://github.com/yonatankarp/rabbit-hole/issues) for a list of proposed
 features (and known issues).
 
 
@@ -140,4 +140,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Yonatan Karp-Rudin - [@yonvata](https://twitter.com/yonvata) - yonvata@gmail.com
 
 Project
-Link: [https://github.com/yonatankarp/springboot-rabbitmq-retry-queues](https://github.com/yonatankarp/springboot-rabbitmq-retry-queues)
+Link: [https://github.com/yonatankarp/rabbit-hole](https://github.com/yonatankarp/rabbit-hole)

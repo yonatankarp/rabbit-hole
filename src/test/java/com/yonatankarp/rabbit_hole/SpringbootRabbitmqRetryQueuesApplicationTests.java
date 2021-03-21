@@ -1,4 +1,4 @@
-package com.yonatankarp.springboot_rabbitmq_retry_queues;
+package com.yonatankarp.rabbit_hole;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
