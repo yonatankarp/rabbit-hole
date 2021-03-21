@@ -1,10 +1,10 @@
 plugins {
-    id 'java'
-    id 'idea'
-    id 'maven-publish'
-    id 'org.springframework.boot' version '2.4.4'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'com.diffplug.spotless' version '5.9.0'
+	id 'java'
+	id 'idea'
+	id 'maven-publish'
+	id 'org.springframework.boot' version '2.4.4'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'com.diffplug.spotless' version '5.9.0'
 }
 
 apply from: 'codemetrics.gradle'
@@ -14,42 +14,42 @@ version "${version}"
 sourceCompatibility = '11'
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 jar {
-    enabled = true
-    archivesBaseName = project.name
-    version = project.version
+	enabled = true
+	archivesBaseName = project.name
+	version = project.version
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-amqp'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.amqp:spring-rabbit-test'
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.amqp:spring-rabbit-test'
 }
 
 test {
-    useJUnitPlatform()
-    finalizedBy spotlessApply
-    finalizedBy jacocoTestReport
+	useJUnitPlatform()
+	finalizedBy spotlessApply
+	finalizedBy jacocoTestReport
 }
 
 publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/yonatankarp/springboot-rabbitmq-retry-queues")
-            credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-    publications {
-        gpr(MavenPublication) {
+	repositories {
+		maven {
+			name = "GitHubPackages"
+			url = uri("https://maven.pkg.github.com/yonatankarp/springboot-rabbitmq-retry-queues")
+			credentials {
+				username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+				password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+			}
+		}
+	}
+	publications {
+		gpr(MavenPublication) {
 //            from(components.java)
-            artifact bootJar
-        }
-    }
+			artifact bootJar
+		}
+	}
 }

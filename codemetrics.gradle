@@ -18,8 +18,6 @@ spotless {
 		importOrder()
 		removeUnusedImports()
 		googleJavaFormat()
-		indentWithTabs(2)
-		indentWithSpaces(4)
 		toggleOffOn()
 	}
 	format 'misc', {
@@ -28,8 +26,7 @@ spotless {
 
 		// define the steps to apply to those files
 		trimTrailingWhitespace()
-		indentWithTabs(2)
-		indentWithSpaces(4)
+		indentWithTabs()
 		endWithNewline()
 	}
 }
