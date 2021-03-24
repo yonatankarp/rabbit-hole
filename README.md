@@ -104,13 +104,118 @@ gradle publishToMavenLocal
 
 ## Usage
 
-TODO: Add an example of how to  consume the library and configure it
+<!-- TODO: amend documentation according to current implementation! -->
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples, and demos
-work well in this space. You may also link to more resources.
+1. To use this library add the following to your `build.gradle` file
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+```groovy
+repositories {
+    maven {
+        name = "Rabbit Hole"
+        url = uri("https://maven.pkg.github.com/yonatankarp/rabbit-hole")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+            password = project.findProperty("gpr.key") ?: System.getenv('GITHUB_PERSONAL_ACCESS_TOKEN')
+        }
+    }
+}
+```
 
+2. To consume the library set the following environment variables:
+
+- `GITHUB_ACTOR` - your GitHub user account.
+- `GITHUB_PERSONAL_ACCESS_TOKEN` - the GitHub [access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token).
+
+3. Add the library to your dependencies:
+```groovy
+dependencies {
+    implementation "com.yonatankarp:rabbit-hole"
+}
+```
+
+4. The library will configure all required beans for you by adding the `@SpringBootApplication` or
+   `@SpringBootApplication` to your application as shown bellow.
+```java
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+```
+
+If you prefer, you can generate the beans yourself using the following code:
+```java
+@Configuration
+public class DemoConfig {
+    @Bean
+    ContextUtils contextUtils(final GenericApplicationContext context) {
+        return new ContextUtils(context);
+    }
+
+    @Bean
+    QueueFactory queueFactory(
+            @Autowired final ContextUtils contextUtils,
+            @Autowired final ConnectionFactory connectionFactory) {
+        return new QueueFactory(contextUtils, connectionFactory);
+    }
+}
+```
+5. Now you can create the queues by adding the configurations to you config file.
+
+```java
+    @Autowired
+    public void createRetryQueues(final QueueFactory factory) {
+        final var config = Collections.singletonList(
+                new TopicQueueConfig("myQueue", "my.routing.key", 5000)
+        );
+        factory.createQueues("myExchange", config);
+    }
+```
+
+**NOTE** - The TTL of the exchange cannot be changed after it was set.  The only way you change the  TTL is to  delete
+the current exchange and create a new one.
+
+6. Add the following to your `application. properties`
+```properties
+# Required for RabbitMQ will acknowledge the messages going to the retry queue and won't return them to the top of the queue
+spring.rabbitmq.listener.simple.default-requeue-rejected=false
+```
+
+7. Create a listener for your event. You can use the following template:
+```java
+@Component
+public class EventListener {
+    private static final int MAX_RETRIES = 5;
+    
+    @Qualifier("deadLetterRabbitTemplate")
+    private RabbitTemplate rabbitTemplate;
+    
+    @RabbitListener(queues = { ... })
+    public void process(Message message) {
+        if (hasExceededRetryCount(message)) {
+            sendMessageToDeadLetter(message);
+            return;
+        }
+        // Consume your message
+    }
+    
+    private boolean hasExceededRetryCount(final Message message) {
+        var xDeathHeader = message.getMessageProperties().getXDeathHeader();
+        if (xDeathHeader != null && xDeathHeader.size() >= 1) {
+            final Long count = (Long) xDeathHeader.get(0).get("count");
+            return count >= MAX_RETRIES;
+        }
+        return false;
+    }
+    
+    private void sendMessageToDeadLetter(final Message failedMessage) {
+        this.rabbitTemplate.convertAndSend("testExchange.dead-letter", failedMessage);
+    }
+}
+```
+
+<!-- TODO: add link to full configuration README once created -->
 
 ## Roadmap
 
