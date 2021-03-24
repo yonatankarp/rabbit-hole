@@ -5,8 +5,8 @@ visit https://github.com/othneildrew/Best-README-Template#about-the-project
 
 <h3 align="center">Rabbit Hole</h3>
 <p align="center">
-	The "Rabbit Hole" project is a JVM library that allows you to easily create retry mechanisms in
-	RabbitMQ brokers without blocking the queue. The implementation is based on the article
+	"Rabbit Hole" allows you to easily create retry mechanisms using Java or Kotlin against
+	RabbitMQ brokers, but without blocking the queue. The implementation is based on the article
 	<a href="https://programmerfriend.com/rabbit-mq-retry/">Implementing Retries using RabbitMQ and Spring Boot 2</a>.
 	<br />
 	<br />
@@ -61,16 +61,18 @@ visit https://github.com/othneildrew/Best-README-Template#about-the-project
 
 ## About The Project
 
-### Problem  statement
+### Background
 
-When a message fails in the `spring-boot-starter-amqp` library which is configured with an exponential backoff
-mechanism will return the message to the top of the queue and block the queue until the message is consumed.
+When a message fails in the `spring-boot-starter-amqp` library, and is configured with an exponential backoff
+mechanism, Rabbit will return the message to the top of the queue and block the queue until the message is consumed.
 
 ### Solution
 
-This library introduces a retry mechanism that will not block the main queue based on the article
-["Implementing Retries using RabbitMQ and Spring Boot 2"](https://programmerfriend.com/rabbit-mq-retry/"), while the
-main change from the article solution is that this library generalizes the solution into `N` queues instead of just `1`.
+This library introduces a retry mechanism that will not block the main queue, referencing prior art in
+["Implementing Retries using RabbitMQ and Spring Boot 2"](https://programmerfriend.com/rabbit-mq-retry/").
+
+The major difference between the solution linked above is that this library is that here we generalize the solution using `N` queues instead of a single queue`.
+
 ### Built With
 
 * [OpenJDK Java 11](https://openjdk.java.net/projects/jdk/11/)
@@ -79,7 +81,7 @@ main change from the article solution is that this library generalizes the solut
 
 ## Getting Started
 
-To build this library locally follow those steps.
+To build this library locally follow the steps below:
 
 ### Prerequisites
 
@@ -88,16 +90,16 @@ To build this library locally follow those steps.
 
 ### Installation
 
-1. Clone the repo
+1. Clone the repo:
 ```shell
 git clone https://github.com/yonatankarp/rabbit-hole.git
 ```
-2. Run Gradle build command to fetch all the project  dependencies
+2. Run Gradle's `build` command to fetch project dependencies:
 ```shell
 gradle build
 ```
 
-3. Publish the library to your local Maven repository
+3. Publish the library to your local Maven repository:
 ```shell
 gradle publishToMavenLocal
 ```
@@ -106,13 +108,14 @@ gradle publishToMavenLocal
 
 <!-- TODO: amend documentation according to current implementation! -->
 
-1. To use this library add the following to your `build.gradle` file
+1. Add the following to your `build.gradle` file in order to consume this library:
 
 ```groovy
 repositories {
     maven {
         name = "Rabbit Hole"
         url = uri("https://maven.pkg.github.com/yonatankarp/rabbit-hole")
+	# TODO: do we need credentials here if we make this a public GitHub repository?
         credentials {
             username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
             password = project.findProperty("gpr.key") ?: System.getenv('GITHUB_PERSONAL_ACCESS_TOKEN')
@@ -121,7 +124,7 @@ repositories {
 }
 ```
 
-2. To consume the library set the following environment variables:
+2. Set the following environment variables to consume the library:
 
 - `GITHUB_ACTOR` - your GitHub user account.
 - `GITHUB_PERSONAL_ACCESS_TOKEN` - the GitHub [access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token).
@@ -133,8 +136,8 @@ dependencies {
 }
 ```
 
-4. The library will configure all required beans for you by adding the `@SpringBootApplication` or
-   `@SpringBootApplication` to your application as shown bellow.
+4. The library configures all required beans for you by adding the `@SpringBootApplication` or
+   `@SpringBootApplication` to your application as shown below.
 ```java
 @SpringBootApplication
 public class DemoApplication {
@@ -144,7 +147,7 @@ public class DemoApplication {
 }
 ```
 
-If you prefer, you can generate the beans yourself using the following code:
+You can generate also the beans yourself like this:
 ```java
 @Configuration
 public class DemoConfig {
@@ -161,7 +164,7 @@ public class DemoConfig {
     }
 }
 ```
-5. Now you can create the queues by adding the configurations to you config file.
+5. Create your Rabbit queues by adding the configurations to you config file:
 
 ```java
     @Autowired
@@ -173,10 +176,10 @@ public class DemoConfig {
     }
 ```
 
-**NOTE** - The TTL of the exchange cannot be changed after it was set.  The only way you change the  TTL is to  delete
-the current exchange and create a new one.
+**NOTE** - The TTL of the exchange cannot be changed after it was set.  The only way you change the TTL is by deleting
+the current exchange and creating a new exchange.
 
-6. Add the following to your `application. properties`
+6. Add the following to your `application. properties`:
 ```properties
 # Required for RabbitMQ will acknowledge the messages going to the retry queue and won't return them to the top of the queue
 spring.rabbitmq.listener.simple.default-requeue-rejected=false
@@ -225,8 +228,8 @@ features (and known issues).
 
 ## Contributing
 
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any
-contributions you make are **greatly appreciated** 🙏.
+Contributions make the open-source community an amazing place to learn, inspire, and create. Any
+contributions are **greatly appreciated** 🙏.
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
