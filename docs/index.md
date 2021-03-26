@@ -1,37 +1,122 @@
-## Welcome to GitHub Pages
+## Welcome to Rabbit Hole!
 
-You can use the [editor on GitHub](https://github.com/yonatankarp/rabbit-hole/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+In this page you can find the explanations in great details about how to integrate with the "Rabbit-Hole" library and
+how the library is working behind the sense.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## How to integrate with Rabbit-Hole
 
-### Markdown
+To integrate with the ["Rabbit Hole"](https://github.com/yonatankarp/rabbit-hole)
+library you can either follow the steps bellow or check our [demo application](https://github.com/yonatankarp/rabbit-hole-demo-application).
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Steps
 
-```markdown
-Syntax highlighted code block
+- Add the following to your `build.gradle` file in order to consume this library:
+    - Make sure to set the following environment variables to consume the library:
+        - `GITHUB_ACTOR` - your GitHub user account.
+        - `GITHUB_PERSONAL_ACCESS_TOKEN` - the GitHub [access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token).
 
-# Header 1
-## Header 2
-### Header 3
+      ```groovy
+      repositories {
+          maven {
+              name = "Rabbit Hole"
+              url = uri("https://maven.pkg.github.com/yonatankarp/rabbit-hole")
+              credentials {
+                  username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                  password = project.findProperty("gpr.key") ?: System.getenv('GITHUB_PERSONAL_ACCESS_TOKEN')
+              }
+          }
+      }
+      ```
+- Add `maven` plugin to your gradle plugins:
+    ```groovy
+    plugins {
+       id 'maven'
+    }
+    ```
 
-- Bulleted
-- List
+- Add the library to your dependencies:
+    ```groovy
+    dependencies {
+        implementation "com.yonatankarp:rabbit-hole:0.1.0"
+    }
+    ```
 
-1. Numbered
-2. List
+- The library configures all required beans for you by adding the `@SpringBootApplication` or
+  `@SpringBootApplication` to your application as shown below.
+    ```java
+    @SpringBootApplication
+    public class DemoApplication {
+        public static void main(String[] args) {
+            SpringApplication.run(DemoApplication.class, args);
+        }
+    }
+    ```
+    - You can generate also the beans yourself like this:
+        ```java
+        @Configuration
+        public class DemoConfig {
+            @Bean
+            ContextUtils contextUtils(final GenericApplicationContext context) {
+                return new ContextUtils(context);
+            }
+        
+            @Bean
+            QueueFactory queueFactory(
+                    @Autowired final ContextUtils contextUtils,
+                    @Autowired final ConnectionFactory connectionFactory) {
+                return new QueueFactory(contextUtils, connectionFactory);
+            }
+        }
+        ```
 
-**Bold** and _Italic_ and `Code` text
+- Create your Rabbit queues by adding the configurations to you config file:
+    - **NOTE** - The TTL of the exchange cannot be changed after it was set.  The only way you change the TTL is by deleting
+      the current exchange and creating a new exchange.
+  ```java
+        @Autowired
+        public void createRetryQueues(final QueueFactory factory) {
+            final var config = Collections.singletonList(
+                    new TopicQueueConfig("myQueue", "my.routing.key", 5000)
+            );
+            factory.createQueues("myExchange", config);
+        }
+    ```
 
-[Link](url) and ![Image](src)
-```
+- Add the following to your `application. properties`:
+    ```properties
+    # Required for RabbitMQ will acknowledge the messages going to the retry queue and won't return them to the top of the queue
+    spring.rabbitmq.listener.simple.default-requeue-rejected=false
+    ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/yonatankarp/rabbit-hole/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+- Create a listener for your event. You can use the following template:
+    ```java
+    @Component
+    public class EventListener {
+        private static final int MAX_RETRIES = 5;
+        
+        @Qualifier("deadLetterRabbitTemplate")
+        private RabbitTemplate rabbitTemplate;
+        
+        @RabbitListener(queues = { ... })
+        public void process(Message message) {
+            if (hasExceededRetryCount(message)) {
+                sendMessageToDeadLetter(message);
+                return;
+            }
+            // Consume your message
+        }
+        
+        private boolean hasExceededRetryCount(final Message message) {
+            var xDeathHeader = message.getMessageProperties().getXDeathHeader();
+            if (xDeathHeader != null && xDeathHeader.size() >= 1) {
+                final Long count = (Long) xDeathHeader.get(0).get("count");
+                return count >= MAX_RETRIES;
+            }
+            return false;
+        }
+        
+        private void sendMessageToDeadLetter(final Message failedMessage) {
+            this.rabbitTemplate.convertAndSend("testExchange.dead-letter", failedMessage);
+        }
+    }
+    ```
