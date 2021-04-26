@@ -22,7 +22,7 @@ jobs:
           echo "::set-output name=version::$version"
       - name: Get Release Tag
         id: previoustag
-        uses: WyriHaximus/github-action-get-previous-tag@v1.0.1
+        uses: WyriHaximus/github-action-get-previous-tag@v1.1
 
       - name: Set Artifact Version
         run: |
