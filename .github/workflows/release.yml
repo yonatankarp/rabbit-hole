@@ -28,6 +28,7 @@ jobs:
         run: |
           echo Artifact version: ${{ steps.previoustag.outputs.tag }}
           echo "version=${{ steps.previoustag.outputs.tag }}" > gradle.properties
+
       - name: Install Java
         uses: actions/setup-java@v2
         with:

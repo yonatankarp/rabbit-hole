@@ -8,9 +8,15 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    labels:
+      - "type: dependency-upgrade"
+      - "relates-to: build"
 
   # Maintain dependencies for Gradle
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "weekly"
+    labels:
+      - "type: dependency-upgrade"
+      - "relates-to: build"
