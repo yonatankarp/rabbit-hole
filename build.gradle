@@ -9,7 +9,7 @@ plugins {
 }
 
 ext {
-	springBootVersion = '2.5.2'
+	springBootVersion = '2.5.4'
 }
 
 apply from: 'codemetrics.gradle'
