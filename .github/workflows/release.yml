@@ -36,7 +36,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Build Artifact
-        uses: eskatos/gradle-command-action@v1.5.1
+        uses: eskatos/gradle-command-action@v2
         with:
           # Here we consume the `output` from our `Get Gradle Version` step:
           gradle-version: ${{ steps.gradle.version }}
@@ -46,7 +46,7 @@ jobs:
           configuration-cache-enabled: false
 
       - name: Publish Artifact
-        uses: eskatos/gradle-command-action@v1.5.1
+        uses: eskatos/gradle-command-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
