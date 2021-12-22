@@ -18,10 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        service: [ rabbit-hole, demo-app ]
+        artifact: [ rabbit-hole, demo-app ]
     runs-on: ubuntu-latest
-    env:
-      APPLICATION_NAME: ${{ matrix.service }}
     steps:
 
       - name: Install Java
@@ -49,8 +47,7 @@ jobs:
         id: build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew ${{ matrix.service }}:build
-
+        run: ./gradlew ${{ matrix.artifact }}:build
 
       - uses: codecov/codecov-action@v2.1.0
         with:

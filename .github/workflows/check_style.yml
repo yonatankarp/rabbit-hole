@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [ rabbit-hole, demo-app ]
+        artifact: [ rabbit-hole, demo-app ]
 
     steps:
 
@@ -46,4 +46,4 @@ jobs:
         id: check-style
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew ${{ matrix.service }}:spotlessCheck
+        run: ./gradlew ${{ matrix.artifact }}:spotlessCheck

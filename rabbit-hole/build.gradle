@@ -8,18 +8,8 @@ plugins {
     id "com.diffplug.spotless"
 }
 
-group = 'com.yonatankarp'
-version "${version}"
-sourceCompatibility = '11'
-
-repositories {
-    mavenCentral()
-}
-
 jar {
     enabled = true
-    archivesBaseName = project.name
-    version = project.version
 }
 
 bootJar {
@@ -44,4 +34,32 @@ test {
     useJUnitPlatform()
     finalizedBy spotlessApply
     finalizedBy jacocoTestReport
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.yonatankarp'
+            artifactId = project.name
+            version = project.version
+
+            from components.java
+            versionMapping {
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/yonatankarp/rabbit-hole")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
