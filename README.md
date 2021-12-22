@@ -19,8 +19,7 @@ visit https://github.com/othneildrew/Best-README-Template#about-the-project
 </p>
 
 
-![Build](https://github.com/yonatankarp/rabbit-hole/actions/workflows/build.yml/badge.svg)
-![Code Style](https://github.com/yonatankarp/rabbit-hole/actions/workflows/code_style.yml/badge.svg)
+![Build](https://github.com/yonatankarp/rabbit-hole/actions/workflows/ci.yml/badge.svg)
 [![codecov](https://codecov.io/gh/yonatankarp/rabbit-hole/branch/main/graph/badge.svg?token=BZ118ARLZQ)](https://codecov.io/gh/yonatankarp/rabbit-hole)
 [![Known Vulnerabilities](https://snyk.io/test/github/yonatankarp/rabbit-hole/badge.svg)](https://snyk.io/test/github)
 ![GitHub last commit](https://img.shields.io/github/last-commit/yonatankarp/rabbit-hole)
@@ -106,7 +105,7 @@ gradle publishToMavenLocal
 
 ## Usage
 
-To see how to use the library check our latest integration documentation [here](https://yonatankarp.github.io/rabbit-hole/).
+To see how to use the library check our latest integration documentation [here](./demo-app/README.md).
 
 ## Roadmap
 
