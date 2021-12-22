@@ -7,7 +7,7 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.support.GenericApplicationContext;
 
-/** An helper class to register objects into the application context */
+/** A helper class to register objects into the application context */
 @AllArgsConstructor
 public class ContextUtils {
 
