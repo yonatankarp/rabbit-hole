@@ -1,5 +1,23 @@
 package com.yonatankarp.rabbit_hole.retry.topic;
 
+import java.util.Collections;
+import com.yonatankarp.rabbit_hole.configs.RabbitHoleConfig;
+import com.yonatankarp.rabbit_hole.config.ComponentTestConfig;
+import com.yonatankarp.rabbit_hole.utils.ContextUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.ExchangeTypes;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import static com.yonatankarp.rabbit_hole.retry.RetryBuilder.DEAD_LETTER_BINDING_SUFFIX;
 import static com.yonatankarp.rabbit_hole.retry.RetryBuilder.DEAD_LETTER_EXCHANGE_KEY;
 import static com.yonatankarp.rabbit_hole.retry.RetryBuilder.DEAD_LETTER_QUEUES_SUFFIX;
@@ -15,32 +33,22 @@ import static com.yonatankarp.rabbit_hole.retry.RetryBuilder.TO_RETRY_QUEUE_ROUT
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.yonatankarp.rabbit_hole.utils.ContextUtils;
-import java.util.Collections;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.ExchangeTypes;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
-
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {RabbitHoleConfig.class, ComponentTestConfig.class})
 public class TopicRetryBuilderIntegrationTest {
 
     private static final String EXCHANGE_NAME = "myExchange";
     private static final String QUEUE_NAME = "myQueue";
     private static final String ROUTING_KEY = "my.routing.key";
 
-    @Autowired private ApplicationContext context;
+    @Autowired
+    private ApplicationContext context;
 
-    @Autowired private ContextUtils contextUtil;
+    @Autowired
+    private ContextUtils contextUtil;
 
-    @Autowired private ConnectionFactory connectionFactory;
+    @Autowired
+    private ConnectionFactory connectionFactory;
 
     private TopicRetryBuilder retryBuilder;
 
