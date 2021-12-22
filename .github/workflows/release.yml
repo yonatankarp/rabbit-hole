@@ -1,8 +1,7 @@
 # This action should be triggered on any PR merge to our main branch
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
 
 jobs:
   artifact:
