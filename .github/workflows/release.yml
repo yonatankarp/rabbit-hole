@@ -1,25 +1,28 @@
-name: Release
-
+# This action should be triggered on any PR merge to our main branch
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
 
 jobs:
   artifact:
     name: Artifact
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [ rabbit-hole ]
     steps:
-      - uses: actions/checkout@v2.4.0
+      - name: Install Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11
+          distribution: 'adopt'
 
-      - name: Get Gradle Version
-        id: gradle
-        # In the `run` stage here we parse out the Gradle version from
-        # `gradle-wrapper.properties` and pass it to the `output` of our
-        # Job step:
-        run: |
-          properties="./gradle/wrapper/gradle-wrapper.properties"
-          version="$(grep distributionUrl $properties | cut -d'-' -f2)"
-          echo "::set-output name=version::$version"
+      - name: Git Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
       - name: Get Release Tag
         id: previoustag
         uses: WyriHaximus/github-action-get-previous-tag@v1.1
@@ -29,27 +32,14 @@ jobs:
           echo Artifact version: ${{ steps.previoustag.outputs.tag }}
           echo "version=${{ steps.previoustag.outputs.tag }}" > gradle.properties
 
-      - name: Install Java
-        uses: actions/setup-java@v2.4.0
-        with:
-          java-version: 11
-          distribution: 'adopt'
-
-      - name: Build Artifact
-        uses: eskatos/gradle-command-action@v1.5.1
-        with:
-          # Here we consume the `output` from our `Get Gradle Version` step:
-          gradle-version: ${{ steps.gradle.version }}
-          arguments: build
-          wrapper-cache-enabled: false
-          dependencies-cache-enabled: false
-          configuration-cache-enabled: false
-
-      - name: Publish Artifact
-        uses: eskatos/gradle-command-action@v1.5.1
+      - name: Gradle Build Artifact
+        id: build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          gradle-version: ${{ steps.gradle.version }}
-          arguments: publish
-          wrapper-cache-enabled: false
+        run: ./gradlew ${{ matrix.service }}:build
+
+      - name: Publish Artifact
+        id: build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew ${{ matrix.service }}:publish

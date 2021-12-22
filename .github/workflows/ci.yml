@@ -1,112 +1,99 @@
 name: Build
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
+    branches: [ 'main' ]
+    types: [ opened, synchronize, reopened, ready_for_review ]
+  pull_request_target:
+    branches: [ 'main' ]
+    types: [ opened, synchronize, reopened, ready_for_review ]
 
 jobs:
-  execute:
-    name: Tests
+  ci:
+    # If the PR is coming from a fork (pull_request_target), ensure it's opened by "dependabot[bot]".
+    # Otherwise, clone it normally.
+    if: |
+      (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') ||
+      (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [ rabbit-hole ]
     runs-on: ubuntu-latest
+    env:
+      APPLICATION_NAME: ${{ matrix.service }}
     steps:
-      - uses: actions/checkout@v2.4.0
-
-      - name: Install Ubuntu packages
-        id: package
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends fontconfig
-
-      - name: Get Gradle Version
-        id: gradle
-        # In the `run` stage here we parse out the Gradle version from
-        # `gradle-wrapper.properties` and pass it to the `output` of our
-        # Job step:
-        run: |
-          properties="./gradle/wrapper/gradle-wrapper.properties"
-          version="$(grep distributionUrl $properties | cut -d'-' -f2)"
-          echo "::set-output name=version::$version"
 
       - name: Install Java
-        uses: actions/setup-java@v2.4.0
+        uses: actions/setup-java@v2
         with:
           java-version: 11
           distribution: 'adopt'
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v2
+      - name: Git Checkout
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+        # Do not trigger a checkout when opening PRs from a fork (helps avoid
+        # "pwn request". See https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request_target )
+        if: github.event_name != 'pull_request_target'
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: Gradle Test
-        uses: eskatos/gradle-command-action@v1.5.1
+      - name: Dependabot Checkout
+        uses: actions/checkout@v2
+        if: github.event_name == 'pull_request_target'
         with:
-          gradle-version: ${{ steps.gradle.version }}
-          arguments: test
-          wrapper-cache-enabled: true
+          # Dependabot can only do the checkout at the HEAD of the PR branch
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Gradle Build
+        id: build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew ${{ matrix.service }}:build
+
 
       - uses: codecov/codecov-action@v2.1.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: "./build/reports/jacoco/jacocoTestReport.xml"
 
-      - name: Cleanup Gradle Cache
-        # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
-        # Restoring these files from a GitHub Actions cache might cause problems for future builds.
-        run: |
-          rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f ~/.gradle/caches/modules-2/gc.properties
-
   check-style:
+    # If the PR is coming from a fork (pull_request_target), ensure it's opened by "dependabot[bot]".
+    # Otherwise, clone it normally.
+    if: |
+      (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') ||
+      (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
     name: Check Style
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2.4.0
+    strategy:
+      matrix:
+        service: [ rabbit-hole ]
 
-      - name: Get Gradle Version
-        id: gradle
-        # In the `run` stage here we parse out the Gradle version from
-        # `gradle-wrapper.properties` and pass it to the `output` of our
-        # Job step:
-        run: |
-          properties="./gradle/wrapper/gradle-wrapper.properties"
-          version="$(grep distributionUrl $properties | cut -d'-' -f2)"
-          echo "::set-output name=version::$version"
+    steps:
 
       - name: Install Java
-        uses: actions/setup-java@v2.4.0
+        uses: actions/setup-java@v2
         with:
           java-version: 11
           distribution: 'adopt'
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v2
+      - name: Git Checkout
+        uses: actions/checkout@v2
+        # Do not trigger a checkout when opening PRs from a fork (helps avoid
+        # "pwn request". See https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request_target )
+        if: github.event_name != 'pull_request_target'
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Dependabot Checkout
+        uses: actions/checkout@v2
+        if: github.event_name == 'pull_request_target'
+        with:
+          # Dependabot can only do the checkout at the HEAD of the PR branch
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Gradle Style Check
-        uses: eskatos/gradle-command-action@v1.5.1
-        with:
-          # Here we consume the `output` from our `Get Gradle Version` step:
-          gradle-version: ${{ steps.gradle.version }}
-          arguments: spotlessJavaCheck
-          wrapper-cache-enabled: true
-
-      - name: Cleanup Gradle Cache
-        # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
-        # Restoring these files from a GitHub Actions cache might cause problems for future builds.
-        run: |
-          rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f ~/.gradle/caches/modules-2/gc.properties
+        id: check-style
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew ${{ matrix.service }}:spotlessCheck
