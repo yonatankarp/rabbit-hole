@@ -1,27 +1,24 @@
-name: Build
+name: CheckStyle
 
 on:
   pull_request:
-    branches: [ 'main' ]
     types: [ opened, synchronize, reopened, ready_for_review ]
   pull_request_target:
-    branches: [ 'main' ]
     types: [ opened, synchronize, reopened, ready_for_review ]
 
 jobs:
-  ci:
+  check-style:
     # If the PR is coming from a fork (pull_request_target), ensure it's opened by "dependabot[bot]".
     # Otherwise, clone it normally.
     if: |
       (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') ||
       (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
+    name: Check Style
+    runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
         service: [ rabbit-hole, demo-app ]
-    runs-on: ubuntu-latest
-    env:
-      APPLICATION_NAME: ${{ matrix.service }}
+
     steps:
 
       - name: Install Java
@@ -31,7 +28,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Git Checkout
-        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+        uses: actions/checkout@v2
         # Do not trigger a checkout when opening PRs from a fork (helps avoid
         # "pwn request". See https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request_target )
         if: github.event_name != 'pull_request_target'
@@ -45,14 +42,8 @@ jobs:
           # Dependabot can only do the checkout at the HEAD of the PR branch
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Gradle Build
-        id: build
+      - name: Gradle Style Check
+        id: check-style
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew ${{ matrix.service }}:build
-
-
-      - uses: codecov/codecov-action@v2.1.0
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: "./build/reports/jacoco/jacocoTestReport.xml"
+        run: ./gradlew ${{ matrix.service }}:spotlessCheck
