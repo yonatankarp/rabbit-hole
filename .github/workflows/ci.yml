@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        service: [ rabbit-hole ]
+        service: [ rabbit-hole, demo-app ]
     runs-on: ubuntu-latest
     env:
       APPLICATION_NAME: ${{ matrix.service }}

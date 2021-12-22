@@ -1,2 +1,4 @@
 rootProject.name = 'rabbit-hole-project'
 include 'rabbit-hole'
+include 'demo-app'
+
