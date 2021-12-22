@@ -39,7 +39,7 @@ jobs:
         run: ./gradlew ${{ matrix.service }}:build
 
       - name: Publish Artifact
-        id: build
+        id: publish_artifact
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew ${{ matrix.service }}:publish
