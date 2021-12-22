@@ -1,20 +1,20 @@
 package com.yonatankarp.rabbit_hole.retry;
 
+import java.util.Arrays;
+import java.util.Collections;
+import com.yonatankarp.rabbit_hole.exceptions.ExchangeException;
+import com.yonatankarp.rabbit_hole.exceptions.QueueConfigException;
+import com.yonatankarp.rabbit_hole.retry.topic.TopicQueueConfig;
+import com.yonatankarp.rabbit_hole.utils.ContextUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
-import com.yonatankarp.rabbit_hole.exceptions.ExchangeException;
-import com.yonatankarp.rabbit_hole.exceptions.QueueConfigException;
-import com.yonatankarp.rabbit_hole.retry.topic.TopicQueueConfig;
-import com.yonatankarp.rabbit_hole.utils.ContextUtils;
-import java.util.Arrays;
-import java.util.Collections;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 
 public class QueueFactoryTest {
 

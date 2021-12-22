@@ -1,0 +1,45 @@
+plugins {
+    id "java"
+    id "jacoco"
+    id "maven-publish"
+    id "org.springframework.boot"
+    id "io.spring.dependency-management"
+    id "io.freefair.lombok"
+    id "com.diffplug.spotless"
+}
+
+group = 'com.yonatankarp'
+version "${version}"
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    enabled = true
+    archivesBaseName = project.name
+    version = project.version
+}
+
+bootJar {
+    enabled = false
+}
+
+dependencies {
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+build {
+    finalizedBy spotlessApply
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy spotlessApply
+    finalizedBy jacocoTestReport
+}

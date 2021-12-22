@@ -1,1 +1,2 @@
-rootProject.name = 'rabbit-hole'
+rootProject.name = 'rabbit-hole-project'
+include 'rabbit-hole'
