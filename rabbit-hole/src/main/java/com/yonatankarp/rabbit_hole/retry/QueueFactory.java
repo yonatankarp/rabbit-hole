@@ -46,7 +46,7 @@ public class QueueFactory {
     *
     * @param exchangeName - the name of the main exchange to create
     * @param configs - a list of queues that needs to be created and associated with the exchange
-    * @throws com.yonatankarp.rabbit_hole.exceptions.QueueConfigException - if the configuration list
+    * @throws QueueConfigException - if the configuration list
     *     is empty, null or mixed of multiple QueueConfig types
     */
     public void createQueues(final String exchangeName, final List<? extends QueueConfig> configs) {

@@ -1,70 +1,26 @@
 plugins {
-	id 'java'
-	id 'idea'
-	id 'maven-publish'
-	id 'org.springframework.boot' version '2.6.1'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'com.diffplug.spotless' version '6.0.4'
-	id "io.freefair.lombok" version "6.3.0"
+    id("jacoco")
+    id("com.diffplug.spotless") version "5.17.1" apply true
+    id("org.springframework.boot") version "2.5.5" apply false
+    id("io.spring.dependency-management") version "1.0.11.RELEASE" apply false
+    id("io.freefair.lombok") version "6.2.0" apply false
 }
 
-ext {
-	springBootVersion = '2.6.1'
+subprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url = uri("https://packages.confluent.io/maven/") }
+        maven {
+            url = uri("https://maven.pkg.github.com/yonatankarp/rabbit-hole")
+            credentials {
+                username = findProperty("gpr.user")?.toString() ?: System.getenv("GITHUB_ACTOR")
+                password = findProperty("gpr.key")?.toString() ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
 
-apply from: 'codemetrics.gradle'
-
-group = 'com.yonatankarp'
-version "${version}"
-sourceCompatibility = '11'
-
-repositories {
-	mavenCentral()
-}
-
-jar {
-	enabled = true
-	archivesBaseName = project.name
-	version = project.version
-}
-
-bootJar {
-	enabled = false
-}
-
-dependencies {
-	implementation "org.springframework.boot:spring-boot-starter-amqp:$springBootVersion"
-
-	testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}") {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-}
-
-test {
-	useJUnitPlatform()
-	finalizedBy spotlessApply
-	finalizedBy jacocoTestReport
-}
-
-publishing {
-	repositories {
-		maven {
-			name = "GitHubPackages"
-			url = uri("https://maven.pkg.github.com/yonatankarp/rabbit-hole")
-			credentials {
-				username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-				password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
-			}
-		}
-	}
-	publications {
-		maven(MavenPublication) {
-			from components.java
-			versionMapping {
-				usage('java-runtime') {
-					fromResolutionResult()
-				}
-			}
-		}
-	}
+jacoco {
+    toolVersion = "0.8.7"
 }
