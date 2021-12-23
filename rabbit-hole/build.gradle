@@ -1,5 +1,7 @@
 plugins {
     id "java"
+    id "org.jetbrains.kotlin.jvm"
+    id "org.jetbrains.kotlin.plugin.allopen"
     id "jacoco"
     id "maven-publish"
     id "org.springframework.boot"
@@ -17,6 +19,7 @@ bootJar {
 }
 
 dependencies {
+    implementation group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8"
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
 
     // Tests
@@ -62,4 +65,8 @@ publishing {
             }
         }
     }
+}
+
+allOpen {
+    annotation("org.springframework.context.annotation.Configuration")
 }
