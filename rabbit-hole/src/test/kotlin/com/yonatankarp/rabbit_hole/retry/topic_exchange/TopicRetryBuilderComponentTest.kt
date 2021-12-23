@@ -1,10 +1,10 @@
 package com.yonatankarp.rabbit_hole.retry.topic_exchange
 
 import com.yonatankarp.rabbit_hole.config.TestConfig
-import com.yonatankarp.rabbit_hole.configs.RabbitHoleConfig
+import com.yonatankarp.rabbit_hole.config.RabbitHoleConfig
 import com.yonatankarp.rabbit_hole.retry.RetryBuilder
-import com.yonatankarp.rabbit_hole.retry.topic.TopicQueueConfig
-import com.yonatankarp.rabbit_hole.retry.topic.TopicRetryBuilder
+import com.yonatankarp.rabbit_hole.retry.exchanges.topic.TopicQueueConfig
+import com.yonatankarp.rabbit_hole.retry.exchanges.topic.TopicRetryBuilder
 import com.yonatankarp.rabbit_hole.utils.ContextUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
