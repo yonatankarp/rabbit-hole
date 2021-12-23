@@ -1,7 +1,7 @@
 package com.yonatankarp.rabbit_hole.utils
 
 import com.yonatankarp.rabbit_hole.config.TestConfig
-import com.yonatankarp.rabbit_hole.configs.RabbitHoleConfig
+import com.yonatankarp.rabbit_hole.config.RabbitHoleConfig
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test

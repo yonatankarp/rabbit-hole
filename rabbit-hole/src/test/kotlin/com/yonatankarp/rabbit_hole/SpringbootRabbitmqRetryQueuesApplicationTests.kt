@@ -1,7 +1,7 @@
 package com.yonatankarp.rabbit_hole
 
 import com.yonatankarp.rabbit_hole.config.TestConfig
-import com.yonatankarp.rabbit_hole.configs.RabbitHoleConfig
+import com.yonatankarp.rabbit_hole.config.RabbitHoleConfig
 import com.yonatankarp.rabbit_hole.retry.QueueFactory
 import com.yonatankarp.rabbit_hole.utils.ContextUtils
 import org.junit.jupiter.api.Assertions

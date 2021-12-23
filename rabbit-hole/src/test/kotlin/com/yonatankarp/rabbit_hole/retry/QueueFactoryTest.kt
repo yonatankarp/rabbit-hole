@@ -1,9 +1,13 @@
 package com.yonatankarp.rabbit_hole.retry
 
-import com.yonatankarp.rabbit_hole.exceptions.ExchangeException
-import com.yonatankarp.rabbit_hole.exceptions.QueueConfigException
-import com.yonatankarp.rabbit_hole.retry.topic.TopicQueueConfig
+import com.yonatankarp.rabbit_hole.exception.ExchangeException
+import com.yonatankarp.rabbit_hole.exception.QueueConfigException
+import com.yonatankarp.rabbit_hole.retry.exchanges.topic.TopicQueueConfig
 import com.yonatankarp.rabbit_hole.utils.ContextUtils
+import io.mockk.clearAllMocks
+import io.mockk.mockk
+import io.mockk.verify
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -11,24 +15,21 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.reset
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import java.util.stream.Stream
 
 class QueueFactoryTest {
-    private val contextUtils: ContextUtils = mock(ContextUtils::class.java)
-    private val connectionFactory: ConnectionFactory = mock(ConnectionFactory::class.java)
+    private val contextUtils = mockk<ContextUtils>(relaxed = true)
+    private val connectionFactory = mockk<ConnectionFactory>(relaxed = true)
     private lateinit var factory: QueueFactory
 
     @BeforeEach
     fun init() {
-        reset(contextUtils)
-        reset(connectionFactory)
         factory = QueueFactory(contextUtils, connectionFactory)
     }
+
+    @AfterEach
+    fun tearDown() = clearAllMocks()
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -62,14 +63,17 @@ class QueueFactoryTest {
         inner class TestCase(val config: List<QueueConfig>?, val exception: Class<out Throwable>) {
             override fun toString() = "config: $config, exception: $exception"
         }
+
         inner class DummyQueueConfig : QueueConfig
 
         private fun queueConfigs(): Stream<TestCase> = Stream.of(
             TestCase(null, QueueConfigException::class.java),
-            TestCase(listOf(
-                TopicQueueConfig("testQueue", "testRoutingKey", 1000),
-                DummyQueueConfig()
-            ), QueueConfigException::class.java),
+            TestCase(
+                listOf(
+                    TopicQueueConfig("testQueue", "testRoutingKey", 1000),
+                    DummyQueueConfig()
+                ), QueueConfigException::class.java
+            ),
             TestCase(listOf(DummyQueueConfig()), IllegalArgumentException::class.java)
         )
     }
@@ -78,7 +82,7 @@ class QueueFactoryTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class TopicConfigTest {
         @Test
-        fun testTopicConfiguration() {
+        fun `should configure topic exchange correctly`() {
             // Given a topic queue configuration
             val configs = listOf(TopicQueueConfig("testQueue", "testRoutingKey", 1000))
 
@@ -87,8 +91,7 @@ class QueueFactoryTest {
 
             // Then we expect the context utilities class to be called with the main topic exchange
             // and the retry topic exchange
-            Mockito.verify(contextUtils, Mockito.times(1))
-                .registerTopicExchange(ArgumentMatchers.any())
+            verify(exactly = 1) { contextUtils.registerTopicExchange(any()) }
         }
     }
 }
