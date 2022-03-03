@@ -69,7 +69,9 @@ jobs:
         if: ${{ steps.metadata.outputs.update-type == 'version-update:semver-minor' ||
                 steps.metadata.outputs.update-type == 'version-update:semver-patch' }}
         # Approving the PR and waiting for 5 sec to let GitHub UI to reflect the changes
-        run: gh auth login && gh pr review --approve "$PR_URL" && sleep 5
+        run: (echo $GITHUB_TOKEN | gh auth login) && \
+             gh pr review --approve "$PR_URL" && \
+             sleep 5
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.REVIEWER_GITHUB_TOKEN }}
