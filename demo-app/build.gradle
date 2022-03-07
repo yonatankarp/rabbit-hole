@@ -1,8 +1,8 @@
 plugins {
     id "java"
-    id "org.jetbrains.kotlin.jvm"
-    id "org.jetbrains.kotlin.plugin.allopen"
     id "jacoco"
+    id "org.jetbrains.kotlin.jvm"
+    id "org.jetbrains.kotlin.plugin.spring"
     id "org.springframework.boot"
     id "io.spring.dependency-management"
     id "com.diffplug.spotless"
@@ -38,7 +38,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
 
+    // Enable this to consume the published jar from GitHub packages
     implementation "com.yonatankarp:rabbit-hole:+"
+    // Enable this to consume the local Jar from the project
+//    implementation(project(":rabbit-hole"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

@@ -1,7 +1,7 @@
 package com.yonatankarp.rabbit_hole.demo_app
 
 import com.yonatankarp.rabbit_hole.retry.QueueFactory
-import com.yonatankarp.rabbit_hole.retry.topic.TopicQueueConfig
+import com.yonatankarp.rabbit_hole.retry.exchanges.topic.TopicQueueConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 
@@ -10,11 +10,10 @@ import org.springframework.context.annotation.Configuration
 class DemoConfig {
     @Autowired
     fun createRetryQueues(factory: QueueFactory) {
-        // TODO: add named parameters when possible:
         val config = listOf(TopicQueueConfig(
-                QUEUE_NAME,
-                ROUTING_KEY,
-                RETRY_TTL_IN_MILLISECONDS
+                queueName = QUEUE_NAME,
+                queueRoutingKey = ROUTING_KEY,
+                retryTTL = RETRY_TTL_IN_MILLISECONDS
             ))
         factory.createQueues(EXCHANGE_NAME, config)
     }
