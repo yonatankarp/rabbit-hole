@@ -25,9 +25,12 @@ visit https://github.com/othneildrew/Best-README-Template#about-the-project
 ![GitHub last commit](https://img.shields.io/github/last-commit/yonatankarp/rabbit-hole)
 ![GitHub issues](https://img.shields.io/github/issues-raw/yonatankarp/rabbit-hole)
 ![GitHub top language](https://img.shields.io/github/languages/top/yonatankarp/rabbit-hole)
-![Maintenance](https://img.shields.io/maintenance/yes/2021)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=yonatankarp_rabbit-hole&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=yonatankarp_rabbit-hole)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=yonatankarp_rabbit-hole&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=yonatankarp_rabbit-hole)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=yonatankarp_rabbit-hole&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=yonatankarp_rabbit-hole)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=yonatankarp_rabbit-hole&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=yonatankarp_rabbit-hole)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=yonatankarp_rabbit-hole&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=yonatankarp_rabbit-hole)
 ![GitHub](https://img.shields.io/github/license/yonatankarp/rabbit-hole)
-
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
