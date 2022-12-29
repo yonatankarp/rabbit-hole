@@ -1,26 +1,23 @@
 plugins {
-    id("spotless")
+    id("com.diffplug.spotless")
     id("jacoco")
 }
 
-spotless {
-    java {
-        importOrder()
-        removeUnusedImports()
-        googleJavaFormat()
-        indentWithTabs(2)
-        indentWithSpaces(4)
-        toggleOffOn()
-    }
-    format 'misc', {
-        // define the files to apply `misc` to
-        target '*.gradle', '*.md', '.gitignore'
+repositories { mavenCentral() }
 
-        // define the steps to apply to those files
-        trimTrailingWhitespace()
-        indentWithTabs(2)
-        indentWithSpaces(4)
-        endWithNewline()
+spotless {
+    kotlin {
+        target(
+                fileTree(projectDir) {
+                    include("**/*.kt")
+                    exclude(
+                            "**/.gradle/**",
+                            "**/build/generated/**"
+                    )
+                }
+        )
+        // see https://github.com/shyiko/ktlint#standard-rules
+        ktlint()
     }
 }
 

@@ -1,10 +1,14 @@
 plugins {
     id("jacoco")
-    id("com.diffplug.spotless") version "6.12.0" apply true
-    id("org.springframework.boot") version "2.7.5" apply false
+    id("rabbit-hole.java-conventions")
+    id("rabbit-hole.code-metrics")
+    id("rabbit-hole.publishing-conventions")
+    id("com.diffplug.spotless") version "6.11.0" apply true
+    id("org.springframework.boot") version "2.7.4" apply false
     id("io.spring.dependency-management") version "1.1.0" apply false
-    id("org.jetbrains.kotlin.jvm") version "1.8.0" apply false
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.8.0" apply false
+    val kotlinVersion = "1.8.0"
+    kotlin("jvm") version kotlinVersion apply false
+    kotlin("plugin.allopen") version kotlinVersion apply false
 }
 
 subprojects {
