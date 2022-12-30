@@ -40,7 +40,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
-    testImplementation(group = "io.mockk", name = "mockk", version = "1.13.2")
+    testImplementation(group = "io.mockk", name = "mockk", version = "1.13.3")
 
 }
 
