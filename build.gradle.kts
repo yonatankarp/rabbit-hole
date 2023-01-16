@@ -4,7 +4,7 @@ plugins {
     id("rabbit-hole.code-metrics")
     id("rabbit-hole.publishing-conventions")
     id("com.diffplug.spotless") version "6.13.0" apply true
-    id("org.springframework.boot") version "2.7.4" apply false
+    id("org.springframework.boot") version "3.0.1" apply false
     id("io.spring.dependency-management") version "1.1.0" apply false
     val kotlinVersion = "1.8.0"
     kotlin("jvm") version kotlinVersion apply false
