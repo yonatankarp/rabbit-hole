@@ -3,7 +3,7 @@ This repository demo how to integrate your SpringBoot application with the ["Rab
 
 ### Built With
 
-* [OpenJDK Java 11](https://openjdk.java.net/projects/jdk/11/)
+* [OpenJDK Java 17](https://openjdk.org/projects/jdk/17/)
 * [Spring Boot](https://spring.io/projects/spring-boot)
 * [Gradle](https://gradle.org/)
 
