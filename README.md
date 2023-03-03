@@ -77,7 +77,7 @@ The major difference between the solution linked above is that this library is t
 
 ### Built With
 
-* [OpenJDK Java 11](https://openjdk.java.net/projects/jdk/11/)
+* [OpenJDK Java 17](https://openjdk.org/projects/jdk/17/)
 * [Spring Boot](https://spring.io/projects/spring-boot)
 * [Gradle](https://gradle.org/)
 
@@ -87,7 +87,7 @@ To build this library locally follow the steps below:
 
 ### Prerequisites
 
-* Java 11 or newer
+* Java 17 or newer
 * Gradle
 
 ### Installation
