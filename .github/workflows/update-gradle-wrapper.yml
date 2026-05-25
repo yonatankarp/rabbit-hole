@@ -22,6 +22,6 @@ jobs:
         # review from SumUp. Please do NOT upgrade this version unless it is
         # incompatible with our build - then we'll have to review the version
         # diff.
-        uses: gradle-update/update-gradle-wrapper-action@981c551b17dbcf1940b1b4435afdb79babb7c13a
+        uses: gradle-update/update-gradle-wrapper-action@512b1875f3b6270828abfe77b247d5895a2da1e5
         with:
           repo-token: ${{ secrets.REVIEWER_GITHUB_TOKEN }}
